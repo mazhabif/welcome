@@ -2,222 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mazhabi Forums - Service Interruption</title>
-    <!-- Google Fonts & Font Awesome -->
+    <title>505 - Server is Busy </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        :root {
-            --primary-color: #E50914; /* Netflix Red */
-            --secondary-color: #B20710;
-            --accent-color: #f40612;
-            --background-color: #0F0F0F; /* Very Dark */
-            --surface-color: #1A1A1A;
-            --text-color: #E0E0E0;
-            --muted-text-color: #A0A0A0;
-            --warning-highlight-color: #FFC107; /* Yellow for warning icon */
-            --border-color: #282828;
-            --border-radius: 6px;
-            --font-heading: 'Orbitron', sans-serif;
-            --font-body: 'Roboto', sans-serif;
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-body);
+        *{
             margin: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.7;
+            padding: 0
+        }
+        body{
+            background: #282828;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            height: 100vh;
             justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
+            align-items: center;
             text-align: center;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .error-container {
-            background-color: var(--surface-color);
-            padding: 40px 50px;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            max-width: 650px;
-            width: 100%;
-        }
-
-        .error-icon {
-            font-size: 5em;
-            color: var(--primary-color); /* Red for error state */
-            margin-bottom: 25px;
-            animation: pulseErrorIcon 2s infinite ease-in-out;
+            font-family: "Share Tech Mono", monospace;
         }
         
-        @keyframes pulseErrorIcon {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
-
-        .error-title {
-            font-family: var(--font-heading);
-            font-size: 2.5em;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-top: 0;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 0 8px rgba(229, 9, 20, 0.4);
-        }
-
-        .error-message {
-            font-size: 1.15em;
-            color: var(--text-color);
-            margin-bottom: 20px;
-            font-weight: 300;
-        }
-
-        .error-suggestion {
-            font-size: 1em;
-            color: var(--muted-text-color);
-            margin-bottom: 30px;
-        }
-        .error-suggestion strong {
-            color: var(--text-color);
-            font-weight: 500;
-        }
-
-        .action-buttons .btn {
-            display: inline-block;
-            padding: 12px 25px;
-            margin: 0 10px;
-            font-size: 1em;
-            font-family: var(--font-heading);
-            font-weight: 500;
-            text-align: center;
-            text-decoration: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
-            border: 1px solid transparent;
-        }
-        .action-buttons .btn i { margin-right: 8px; }
-
-        .btn-retry {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-        .btn-retry:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-        .btn-retry:active {
-            transform: scale(0.97);
-        }
-
-        .btn-home {
-            background-color: transparent;
-            color: var(--accent-color);
-            border-color: var(--accent-color);
-        }
-        .btn-home:hover {
-            background-color: var(--accent-color);
-            color: white;
-        }
-         .btn-home:active {
-            transform: scale(0.97);
-        }
+        
+        .share-tech-mono-regular {
+  
+  font-weight: 400;
+  font-style: normal;
+}
 
 
-        .site-branding {
-            margin-top: 40px;
-            font-family: var(--font-heading);
-            font-size: 1.2em;
-            color: var(--muted-text-color);
-            opacity: 0.7;
-        }
-        .site-branding i {
-            color: var(--primary-color);
-            margin-right: 5px;
-        }
-        .site-branding a {
-            color: var(--muted-text-color);
-            text-decoration: none;
-        }
-        .site-branding a:hover {
-            color: var(--accent-color);
-        }
-
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .error-container { padding: 30px 30px; }
-            .error-icon { font-size: 4em; }
-            .error-title { font-size: 2em; }
-            .error-message { font-size: 1.05em; }
-            .error-suggestion { font-size: 0.95em; }
-        }
-        @media (max-width: 480px) {
-            .error-icon { font-size: 3.5em; }
-            .error-title { font-size: 1.7em; }
-            .error-message { font-size: 1em; }
-            .action-buttons {
-                display: flex;
-                flex-direction: column;
-                gap: 15px;
-            }
-            .action-buttons .btn {
-                width: 100%;
-                margin: 0;
-            }
-        }
-
-    </style>
+       .e2{
+           font-size: 30px;
+           color: #d2d2d2;
+           
+       }
+       
+      .e3{
+          margin: 15px 5% 0 5%;
+          color:  #d2d2d2;
+          font-size: 17px;
+      }
+      
+     .footer{
+         color: #d2d2d2;
+         margin-top: 30px;
+     }
+        </style>
 </head>
 <body>
-    <div class="error-container">
-        <div class="error-icon">
-            <i class="fas fa-tools"></i> <!-- or fa-cogs, fa-server, fa-exclamation-triangle -->
-        </div>
-        <h1 class="error-title">505 - Service Interruption</h1>
-        <p class="error-message">
+    <div>
+        <div class="e2"><b>505 - Server is Busy</b></div>
+        <div class="e3" >
             Our apologies, but it seems we're experiencing some technical difficulties.
             Our team has been alerted and is working diligently to resolve the issue.
-        </p>
-        <p class="error-suggestion">
-            We expect to be <strong>back soon</strong>. Please <strong>try again in a few minutes</strong>, or come back in a few hours.
-        </p>
-        <div class="action-buttons">
-            <a href="/welcome"><button class="btn btn-retry">
-                <i class="fas fa-sync-alt"></i> Try Again
-            </button></a>
-            <a href="/signup" class="btn btn-home"> <!-- Replace "/" with your actual homepage URL -->
-                <i class="fas fa-home"></i> Go to Homepage
-            </a>
-        </div>
+        
+      
+            We expect to be <b>back</b> soon. Please try again in<b> a few minutes</b>, or come back in a <b>few hours</b>.
+            
+            </div>
+            
+            <div class="footer">
+                <h2 style="color: #d2003c;"><i class="fa-regular fa-comments"></i> Mazhabi Forum </h2>
+                <p style="color : #d2003c; font-size: 25px; margin-top: 15px;"><a href="https://t.me/m_forum_support" style="color: #d2d2d2;"><i class="fa-brands fa-telegram"></i></a> &nbsp; <a href="#" style="color: #d2d2d2;"><i class="fa-solid fa-envelope"></i></a></p>
+            </div> 
+            
     </div>
-    <div class="site-branding">
-       <a href="#"><i class="fas fa-comments"></i> Mazhabi Forums Network</a><br style="color: #fff;">
-       <p style="color: #fff;"> Contact : <a href="https://t.me/m_forum_support">Telegram</a> &nbsp; <a href="#">Email</a></p>
-    </div>
-
-    <script>
-        // No complex JS needed for this page, primarily static.
-        // The "Try Again" button uses a simple page reload.
-        // The "Go to Homepage" link should point to your site's root.
-    </script>
 </body>
 </html>
