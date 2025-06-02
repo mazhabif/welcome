@@ -2,71 +2,149 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>505 - Server is Busy </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>503 - Service Unavailable</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        *{
-            margin: 0;
-            padding: 0
+        :root {
+            --background-color: #282828;
+            --text-color: #d2d2d2;
+            --accent-color: #d2003c;
+            --font-primary: "Roboto", sans-serif;
+            --font-monospace: "Share Tech Mono", monospace;
         }
-        body{
-            background: #282828;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--background-color);
+            color: var(--text-color);
             display: flex;
-            height: 100vh;
+            min-height: 100vh;
             justify-content: center;
             align-items: center;
             text-align: center;
-            font-family: "Share Tech Mono", monospace;
+            font-family: var(--font-primary);
+            padding: 20px;
         }
-        
-        
-        .share-tech-mono-regular {
-  
-  font-weight: 400;
-  font-style: normal;
-}
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .error-code {
+            font-family: var(--font-monospace);
+            font-size: 3rem; /* 48px */
+            color: var(--text-color);
+            font-weight: 700; /* Make it bold from Roboto if Share Tech Mono doesn't have bold */
+            margin-bottom: 20px;
+        }
+        .error-code strong { /* Use Share Tech Mono for the number */
+            font-family: var(--font-monospace);
+            font-weight: 400; /* Share Tech Mono often only has regular */
+        }
 
 
-       .e2{
-           font-size: 30px;
-           color: #d2d2d2;
-           
-       }
-       
-      .e3{
-          margin: 15px 5% 0 5%;
-          color:  #d2d2d2;
-          font-size: 17px;
-      }
-      
-     .footer{
-         color: #d2d2d2;
-         margin-top: 30px;
-     }
-        </style>
+        .message-title {
+            font-size: 1.75rem; /* 28px */
+            color: var(--text-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .message-details {
+            margin: 0 5% 25px 5%;
+            color: var(--text-color);
+            font-size: 1.1rem; /* 17.6px, slightly larger for readability */
+            line-height: 1.6;
+        }
+
+        .message-details b {
+            color: var(--accent-color); /* Highlight important parts */
+            font-weight: 700;
+        }
+
+        .site-footer {
+            color: var(--text-color);
+            margin-top: 40px;
+            border-top: 1px solid #444; /* Subtle separator */
+            padding-top: 20px;
+        }
+
+        .site-footer h2 {
+            color: var(--text-color); /* Keep forum name standard text color */
+            font-size: 1.5rem; /* 24px */
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .site-footer h2 .fa-comments {
+            color: var(--accent-color); /* Icon in accent color */
+            margin-right: 10px;
+        }
+
+        .contact-links a {
+            color: var(--text-color);
+            font-size: 1.8rem; /* 28.8px */
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .contact-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .error-code {
+                font-size: 2.5rem; /* 40px */
+            }
+            .message-title {
+                font-size: 1.5rem; /* 24px */
+            }
+            .message-details {
+                font-size: 1rem; /* 16px */
+            }
+            .site-footer h2 {
+                font-size: 1.3rem; /* 20.8px */
+            }
+            .contact-links a {
+                font-size: 1.6rem; /* 25.6px */
+            }
+        }
+
+    </style>
 </head>
 <body>
-    <div>
-        <div class="e2"><b>505 - Server is Busy</b></div>
-        <div class="e3" >
-            Our apologies, but it seems we're experiencing some technical difficulties.
-            Our team has been alerted and is working diligently to resolve the issue.
-        
-      
-            We expect to be <b>back</b> soon. Please try again in<b> a few minutes</b>, or come back in a <b>few hours</b>.
-            
+    <div class="container">
+        <main>
+            <h1 class="error-code"><strong>503</strong> - Service Unavailable</h1>
+            <p class="message-title">Our Servers Are Currently Busy</p> 
+            <div class="message-details">
+                <p>We apologize for the temporary inconvenience. Our servers are currently experiencing high demand or undergoing essential maintenance.</p>
+                <p>Our technical team has been alerted and is working diligently to restore full service as quickly as possible.</p>
+                <p>We appreciate your patience. Please try refreshing the page in <b>a few minutes</b>. If the issue persists, you might want to check back in a <b>short while</b>.</p>
             </div>
-            
-            <div class="footer">
-                <h2 style="color: #d2003c;"><i class="fa-regular fa-comments"></i> Mazhabi Forum </h2>
-                <p style="color : #d2003c; font-size: 25px; margin-top: 15px;"><a href="https://t.me/m_forum_support" style="color: #d2d2d2;"><i class="fa-brands fa-telegram"></i></a> &nbsp; <a href="#" style="color: #d2d2d2;"><i class="fa-solid fa-envelope"></i></a></p>
-            </div> 
-            
+        </main>
+
+        <footer class="site-footer">
+            <h2><i class="fa-regular fa-comments"></i> Mazhabi Forum </h2>
+            <p class="contact-links">
+                <a href="https://t.me/m_forum_support" title="Telegram Support" aria-label="Telegram Support"><i class="fa-brands fa-telegram"></i></a>
+                <a href="mailto:support@example.com" title="Email Support" aria-label="Email Support"><i class="fa-solid fa-envelope"></i></a>
+                <!-- Replace support@example.com with your actual support email -->
+            </p>
+        </footer>
     </div>
 </body>
 </html>
